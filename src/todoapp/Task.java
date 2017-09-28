@@ -1,20 +1,13 @@
 package todoapp;
 
 public class Task {
-  String task;
-  boolean completed;
   int order;
+  boolean completed;
+  String text;
 
-  public Task(String task) {
-    this.task = task;
-    this.completed = false;
+  public Task(int order, boolean completed, String text) {
+    this.order = order;
+    this.completed = completed;
+    this.text = text;
   }
-
-  public void addTask(String task) {
-    this.task = task;
-    this.completed = false;
-  }
-
-
-
 }
