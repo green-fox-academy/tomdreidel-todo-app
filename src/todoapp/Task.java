@@ -1,6 +1,7 @@
 package todoapp;
 
 public class Task {
+
   int order;
   boolean completed;
   String text;

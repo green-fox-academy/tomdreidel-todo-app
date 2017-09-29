@@ -5,7 +5,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -37,102 +36,141 @@ public class Todo {
         todoList.add(temp);
       }
     } catch (IOException e) {
-      e.printStackTrace();
+      System.out.println("Could not read file");
     }
   }
-
 
   public void addTodo(String task) {
     Task newTask = new Task(todoTotal + 1, false, task);
     todoList.add(newTask);
     todoTotal ++;
-
     }
 
-
-
   public void listTodo() {
-//    ArrayList<String> output = new ArrayList<>();
-    String checker = " ";
-
+    String checker = "";
     System.out.println("\nCommand Line Todo App\n=============================\n\nThings to do:\n");
 
     for (int i = 0; i < todoTotal; i++) {
-      if (todoList.get(i).completed) {
-        checker = "X";
-      } else if (!todoList.get(i).completed) {
-        checker = " ";
-      }
-       String concatLine =
-            "[" + checker + "] - " + todoList.get(i).order + " - " + todoList.get(i).text + "\n";
-//      output.add(concatLine);
+        if (todoList.get(i).completed) {
+          checker = "X";
+        }
+        else if (!todoList.get(i).completed) {
+          checker = " ";
+        }
+        String concatLine = "[" + checker + "] - " + todoList.get(i).order + " - " + todoList.get(i).text + "\n";
         System.out.println(concatLine);
-      }
-    System.out.println();
-      if ( todoTotal == 0) {
-//      output.add("Nice! You have no things to do.");
-        System.out.println("Nice! You have nothing to do.\n\n");
-      }
-      return;
     }
-
+    System.out.println();
+    if ( todoTotal == 0) {
+      System.out.println("Nice! You have nothing to do.\n\n");
+      }
+    return;
+  }
 
   public void removeTodo(String number) {
-    int intNumber = Integer.parseInt(number) - 1;
-    todoList.remove(todoList.get(intNumber));
+    int intNumber;
+    try {
+      intNumber = Integer.parseInt(number) - 1;
+    }
+    catch (NumberFormatException e) {
+      System.out.println("Please use item number for identification");
+      return;
+    }
+    try {
+      todoList.remove(todoList.get(intNumber));
+    }
+    catch (Exception e) {
+      System.out.println("No such item in list");
+      return;
+    }
     todoTotal --;
     save();
   }
 
+  public void removeAll() {
+    ArrayList<Task> delete = new ArrayList<>();
+    todoList = delete;
+  }
+
   public void toggleCompletion(String order) {
-    int intOrder = Integer.parseInt(order);
-    if (todoList.get(intOrder - 1).completed) {
-      todoList.get(intOrder - 1).completed = false;
+    int intOrder;
+    try {
+      intOrder = Integer.parseInt(order);
     }
-    else if (!todoList.get(intOrder - 1).completed) {
-      todoList.get(intOrder - 1).completed = true;
+    catch (NumberFormatException e) {
+      System.out.println("Please use item number for identification");
+      return;
+    }
+    try {
+      if (todoList.get(intOrder - 1).completed) {
+        todoList.get(intOrder - 1).completed = false;
+      }
+      else if (!todoList.get(intOrder - 1).completed) {
+        todoList.get(intOrder - 1).completed = true;
+      }
+    }
+    catch (Exception e) {
+      System.out.println("No such item in list");
+      return;
     }
     save();
   }
 
-
-
-
-
   public String usage() {
-    return "\nCommand Line Todo App\n=============================\n\nCommand line arguments:\n\n-l\tList all items\n-a\tAdd new item\n-r\tRemove item by index\n-c\tToggle item completion\n-h\tShow help screen\n\n-larch\tSecret Monty Python function\n\n";
+    return "\nCommand Line Todo App\n=============================\n\nCommand line arguments:\n\n-l\tList all items\n-a\tAdd new item\n-r\tRemove item by index\n-c\tToggle item completion\n-h\tShow help screen\n\n";
   }
 
   public void save() {
     List<String> writeTemp = new ArrayList<>();
     for (int i = 0; i < todoList.size(); i++) {
-      writeTemp.add(todoList.get(i).order + "¢¢" + todoList.get(i).completed + "¢¢" + todoList.get(i).text);
+      writeTemp.add((i + 1) + "¢¢" + todoList.get(i).completed + "¢¢" + todoList.get(i).text);
     }
     try {
       Files.write(filePath, writeTemp);
-    } catch (IOException e) {
-      e.printStackTrace();
+    }
+    catch (IOException e) {
+      System.out.println("Could not write file");
     }
   }
+
+  ////////////////////////////////////////////////
+  ///  And now something completely different  ///
+  ////////////////////////////////////////////////
 
   public void montyTodo() {
     ArrayList<Task> output = new ArrayList<>();
     output.add(new Task(1, false, "And now something completely different"));
-    output.add(new Task(2, false, "Monty Python’s"));
-    output.add(new Task(3, false, "Flying Circus"));
-    output.add(new Task(4, false, "The Larch"));
-    String checker = " ";
-    System.out.println("\nCommand Line Todo App\n=============================\n\nThings to do:\n");
+    output.add(new Task(2, false, "Monty Python’s Flying Circus"));
+    output.add(new Task(3, false, "The Larch"));
+    output.add(new Task(4, false, "No. 1"));
+    output.add(new Task(5, false, "The Larch"));
+
+    System.out.println("\nCommand Line Todo App\n=============================\n\nThings to show:\n");
+    for (int i = 0; i < 4; i++) {
+      String concatLine = "[ ] - " + output.get(i).order + " - " + output.get(i).text + "\n";
+      System.out.println(concatLine);
+    }
+    System.out.println();
+    return;
+  }
+
+  public void thanksTodo() {
+    ArrayList<Task> thanksList = new ArrayList<>();
+    thanksList.add(new Task(1, true, "Your attention"));
+    thanksList.add(new Task(2, true, "Your time"));
+    thanksList.add(new Task(3, true, "Your support"));
+    thanksList.add(new Task(4, false, "all the fish"));
+    String check = " ";
+    System.out.println("\nCommand Line Todo App\n=============================\n\nThings to thank you for:\n");
 
     for (int i = 0; i < 4; i++) {
-
-      if (output.get(i).completed) {
-        checker = "X";
-      } else if (!output.get(i).completed) {
-        checker = " ";
+      if (thanksList.get(i).completed) {
+        check = "X";
       }
-      String concatLine =
-          "[" + checker + "] - " + output.get(i).order + " - " + output.get(i).text + "\n";
+      else if (!thanksList.get(i).completed) {
+        check = " ";
+      }
+      String concatLine = "[" + check + "] - " + thanksList.get(i).order + " - " + thanksList.get(i).text + "\n";
       System.out.println(concatLine);
     }
     System.out.println();
