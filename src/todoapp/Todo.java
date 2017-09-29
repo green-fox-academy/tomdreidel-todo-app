@@ -53,12 +53,14 @@ public class Todo {
     for (int i = 0; i < todoTotal; i++) {
         if (todoList.get(i).completed) {
           checker = "X";
+          String concatLine = "[" + checker + "] - " + todoList.get(i).order + " - " + todoList.get(i).text + "\n";
+          System.out.println((char)27 + "[34m" + concatLine + (char)27 + "[0m");
         }
         else if (!todoList.get(i).completed) {
           checker = " ";
-        }
         String concatLine = "[" + checker + "] - " + todoList.get(i).order + " - " + todoList.get(i).text + "\n";
         System.out.println(concatLine);
+        }
     }
     System.out.println();
     if ( todoTotal == 0) {
@@ -148,7 +150,7 @@ public class Todo {
     System.out.println("\nCommand Line Todo App\n=============================\n\nThings to show:\n");
     for (int i = 0; i < 4; i++) {
       String concatLine = "[ ] - " + output.get(i).order + " - " + output.get(i).text + "\n";
-      System.out.println(concatLine);
+      System.out.println((char)27 + "[35m" + concatLine + (char)27 + "[0m");
     }
     System.out.println();
     return;
